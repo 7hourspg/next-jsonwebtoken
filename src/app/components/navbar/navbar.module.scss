@@ -1,0 +1,51 @@
+.container {
+   color: black;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+   .active {
+      color: red;
+   }
+
+   .navbar_wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1000px;
+      margin: auto;
+      height: 5rem;
+
+      .navbar_left {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+
+         .navbar_logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+         }
+      }
+
+      .navbar_right {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+
+         .navbar_menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            list-style: none;
+
+            .navbar_menu_item {
+               margin-right: 50px;
+               cursor: pointer;
+               &:hover {
+                  color: red;
+               }
+            }
+         }
+      }
+   }
+}
