@@ -55,52 +55,92 @@ export const GET = async (res, req) => {
 //   }
 // }
 
+// export const DELETE = async (req, { params }) => {
+//   const headersInstance = headers()
+//   const authorization = headersInstance.get('authorization')
+//   // const verifyToken = jwt.verify(authorization, process.env.JWT_SECRET)
+//   // console.log('token:', verifyToken)
+//   // console.log(req)
+
+//   return jwt.verify(authorization, process.env.JWT_SECRET, err => {
+//     if (err) {
+//       return new NextResponse(
+//         JSON.stringify({ message: 'Token is not valid' }),
+//         {
+//           status: 401,
+//           statusText: 'Unauthorized',
+//           headers: { 'Content-Type': 'application/json' }
+//         }
+//       )
+//     } else {
+//       const id = params.id
+//       const isUserAdmin = users.filter(user => user.id === Number(id))[0]
+
+//       console.log(isUserAdmin)
+//       if (isUserAdmin.isAdmin) {
+//         return new NextResponse(JSON.stringify({ message: 'Delete Success' }), {
+//           status: 200,
+//           headers: { 'Content-Type': 'application/json' },
+//           statusText: 'OK'
+//         })
+//       } else {
+//         return new NextResponse(
+//           JSON.stringify({
+//             message: 'You are not authorized to delete this user'
+//           }),
+//           {
+//             status: 401,
+//             headers: { 'Content-Type': 'application/json' },
+//             statusText: 'Unauthorized'
+//           }
+//         )
+//       }
+
+//       // return new NextResponse(JSON.stringify({ message: 'Delete Success' }), {
+//       //   status: 200,
+//       //   headers: { 'Content-Type': 'application/json' },
+//       //   statusText: 'OK'
+//       // })
+//     }
+//   })
+// }
+
 export const DELETE = async (req, { params }) => {
   const headersInstance = headers()
   const authorization = headersInstance.get('authorization')
-  // const verifyToken = jwt.verify(authorization, process.env.JWT_SECRET)
-  // console.log('token:', verifyToken)
-  // console.log(req)
+  console.log(params.id)
 
-  return jwt.verify(authorization, process.env.JWT_SECRET, err => {
-    if (err) {
+  try {
+    const verifyToken = jwt.verify(authorization, process.env.JWT_SECRET)
+    console.log('token:', verifyToken)
+
+    if (verifyToken.isAdmin && verifyToken.id == params.id) {
       return new NextResponse(
-        JSON.stringify({ message: 'Token is not valid' }),
+        JSON.stringify({ message: 'You are admin go ahead' }),
         {
-          status: 401,
-          statusText: 'Unauthorized',
-          headers: { 'Content-Type': 'application/json' }
-        }
-      )
-    } else {
-      const id = params.id
-      const isUserAdmin = users.filter(user => user.id === Number(id))[0]
-
-      console.log(isUserAdmin)
-      if (isUserAdmin.isAdmin) {
-        return new NextResponse(JSON.stringify({ message: 'Delete Success' }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
           statusText: 'OK'
-        })
-      } else {
-        return new NextResponse(
-          JSON.stringify({
-            message: 'You are not authorized to delete this user'
-          }),
-          {
-            status: 401,
-            headers: { 'Content-Type': 'application/json' },
-            statusText: 'Unauthorized'
-          }
-        )
-      }
-
-      // return new NextResponse(JSON.stringify({ message: 'Delete Success' }), {
-      //   status: 200,
-      //   headers: { 'Content-Type': 'application/json' },
-      //   statusText: 'OK'
-      // })
+        }
+      )
+    } else if (verifyToken.id == params.id) {
+      return new NextResponse(
+        JSON.stringify({
+          message: 'You can delete your account'
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+          statusText: 'OK'
+        }
+      )
     }
-  })
+    return new NextResponse(JSON.stringify({ message: 'Token is not valid' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+      statusText: 'Unauthorized'
+    })
+  } catch (error) {
+    return new NextResponse(JSON.stringify(error))
+  }
 }
