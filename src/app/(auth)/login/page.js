@@ -14,13 +14,17 @@ const LoginPage = () => {
          [name]: value,
       }));
    };
-   console.log(userData);
+   // console.log(userData);
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      axios.post("/api", userData).then((res) => {
-         console.log(res);
-      });
+      try {
+         axios.post("/api", userData).then((res) => {
+            console.log(res);
+         });
+      } catch (error) {
+         console.log(error);
+      }
    };
 
    return (
