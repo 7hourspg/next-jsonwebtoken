@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import jwt from 'jsonwebtoken'
 
-const users = [
+export const users = [
   {
     id: 1,
     name: 'John Doe',
